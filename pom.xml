@@ -1,0 +1,108 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.eric.serializer.google.protoc.buff</groupId>
+	<artifactId>gRPC_Test</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Google Protocol Buffer Test project</name>
+	<description>Google Protocol Buffer Test project</description>
+
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.javafaker</groupId>
+			<artifactId>javafaker</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.16</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java</artifactId>
+			<version>3.15.5</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<!-- <pluginManagement> -->
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.8.0</version>
+					<configuration>
+						<release>11</release>
+					</configuration>
+				</plugin>
+					
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>1.8</version>
+					<executions>
+						<execution>
+							<id>exec-protoc</id>
+							<phase>generate-sources</phase>
+							<configuration>
+								<target>
+									<property name="protoc.filename" value="protoc.exe" />
+									<property name="protoc.filepath" value="${project.basedir}/src/main/resources/${protoc.filename}" />
+									<chmod file="${protoc.filepath}" perm="ugo+rx"/>
+									<mkdir dir="src/main/java/proto" />
+									<path id="protobuf.input.filepaths.path">
+										<fileset dir="src/main/resources/proto">
+											<include name="**/*.proto" />
+										</fileset>
+									</path>
+									<pathconvert pathsep=" " property="protobuf.input.filepaths" refid="protobuf.input.filepaths.path" />
+									<exec executable="${protoc.filepath}" failonerror="false">
+										<arg value="--proto_path" />
+										<arg value="${project.basedir}/src/main/resources/proto" />
+										<arg value="--java_out" />
+										<arg value="${project.basedir}/src/main/java" />
+										<arg line="${protobuf.input.filepaths}" />
+									</exec>
+								</target>
+							</configuration>
+							<goals>
+								<goal>run</goal>
+							</goals>
+						</execution>
+					</executions>					
+				</plugin>
+
+				<!-- <plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>3.2.0</version>
+					<executions>
+						<execution>
+							<id>add-classes</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>add-source</goal>
+							</goals>
+							<configuration>
+								<sources>
+									<source>src/main/java/proto</source>
+								</sources>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin> -->
+			</plugins>
+		<!-- </pluginManagement> -->
+	</build>
+</project>
