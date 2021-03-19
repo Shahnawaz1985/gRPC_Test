@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 option java_outer_classname = "AlbumProtos";
-option java_package = "dustin.examples.protobuf";
+option java_package = "com.eric.protoc.generated";
 
 message Album {
     string title = 1;

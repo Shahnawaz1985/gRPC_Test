@@ -60,7 +60,7 @@
 									<property name="protoc.filename" value="protoc.exe" />
 									<property name="protoc.filepath" value="${project.basedir}/src/main/resources/${protoc.filename}" />
 									<chmod file="${protoc.filepath}" perm="ugo+rx"/>
-									<mkdir dir="src/main/java/proto" />
+									<mkdir dir="src/main/java/com/eric/protoc/generated" />
 									<path id="protobuf.input.filepaths.path">
 										<fileset dir="src/main/resources/proto">
 											<include name="**/*.proto" />
